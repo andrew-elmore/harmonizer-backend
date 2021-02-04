@@ -8,6 +8,12 @@ const axios = require('axios')
 const airtableKey = require('./../../config/keys')
 
 
+const airtable = axios.create({
+    baseURL: 'https://api.airtable.com/v0/appSm7uscErech1Zt',
+    headers: {
+        Authorization: 'Bearer keyHyLPdaCbr7AoxH'
+    }
+})
 
 
 router.post('/upload', (req, res, next) => {
@@ -22,21 +28,31 @@ router.post('/upload', (req, res, next) => {
         }
 
         csvtojson().fromFile(destination).then(async (source) => {
-            console.log(source)
             res.send(source)
 
             setTimeout(() => {
-                fs.unlinkSync(destination)
+                try {
+                    fs.unlinkSync(destination)
+                } catch (error) {
+                    console.log(error)
+                }
             }, 10000)
         })
-
-
     });
+})
 
 
 
+router.post('/match', (req, res) => {
+    const distributors = JSON.parse(req.body.distributors)
+    console.log(req.body.distributors)
 
-
+    Object.entries(distributors).forEach(([distributor, items]) => {
+        console.log("/match distributor: ", distributor); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        console.log("/match items: ", items); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        
+    })
+    res.send(req.body.distributors)
 })
 
 module.exports = router;
