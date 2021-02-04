@@ -4,8 +4,9 @@ const app = express();
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
-const converter = require("./routes/api/converter");
 const bodyParser = require("body-parser");
+const converter = require("./routes/api/converter");
+const harmonize = require("./routes/api/harmonize");
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("frontend/build"));
@@ -24,6 +25,8 @@ app.use('/public', express.static(__dirname + '/public'));
 
 app.get("/", (req, res) => res.send("Hello Worlds"));
 app.use("/api/converter", converter)
+
+app.use("/api/harmonize", harmonize)
 
 app.get("/download", (req, res) => {
   console.log('route suceeded finally')
