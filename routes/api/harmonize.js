@@ -4,16 +4,9 @@ const fs = require('fs')
 const csvtojson = require('csvtojson')
 const json2csv = require('json2csv').parse
 
-const axios = require('axios')
-const airtableKey = require('./../../config/keys')
+const itemActions = require('./../../models/itemActions')
 
 
-const airtable = axios.create({
-    baseURL: 'https://api.airtable.com/v0/appSm7uscErech1Zt',
-    headers: {
-        Authorization: 'Bearer keyHyLPdaCbr7AoxH'
-    }
-})
 
 
 router.post('/upload', (req, res, next) => {
@@ -43,16 +36,30 @@ router.post('/upload', (req, res, next) => {
 
 
 
-router.post('/match', (req, res) => {
-    const distributors = JSON.parse(req.body.distributors)
-    console.log(req.body.distributors)
+router.post('/match', async(req, res) => {
+    console.log(req.body.distbs)
+    const distbs = JSON.parse(req.body.distbs)
 
-    Object.entries(distributors).forEach(([distributor, items]) => {
-        console.log("/match distributor: ", distributor); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        console.log("/match items: ", items); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        
-    })
-    res.send(req.body.distributors)
+    let matches = {}
+    let distbsArray = Object.entries(distbs)
+    for (const [distb, items] of distbsArray) {
+        const airtableResults = await itemActions.fetchMatches(distb, items)
+        const records = airtableResults.data.records
+
+        records.forEach((record) => {
+            const distbId = record.fields['DISTB_ID']
+            const tlId = record.fields['TL_ID']
+            if(matches[distb]){
+                matches[distb][distbId] = tlId
+            } else {
+                matches[distb] = {}
+                matches[distb][distbId] = tlId
+            }
+        })
+    }
+
+    console.log(matches)
+    res.send(matches)
 })
 
 module.exports = router;
