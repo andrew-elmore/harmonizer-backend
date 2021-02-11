@@ -22,6 +22,7 @@ router.post('/upload', (req, res, next) => {
         }
 
         csvtojson().fromFile(destination).then(async (source) => {
+            console.log(source)
             res.send(source)
 
             setTimeout(() => {
@@ -55,7 +56,7 @@ const recursiveFetchMatches = async(distb, items, offset) => {
 router.post('/match', async(req, res) => {
     // console.log(req.body.distbs)
     const distbs = JSON.parse(req.body.distbs)
-    console.log(distbs["KEHE"].length)
+    console.log(distbs)
     let matches = {}
     let distbsArray = Object.entries(distbs)
     
