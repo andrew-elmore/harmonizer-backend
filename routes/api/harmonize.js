@@ -35,7 +35,18 @@ router.post('/upload', (req, res, next) => {
 })
 
 const recursiveFetchMatches = async(distb, items, offset) => {
-    const airtableResults = await itemActions.fetchMatches(distb, items)
+    console.log("recursiveFetchMatches items.length: ", items.length); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    
+    const airtableResults = await itemActions.fetchMatches(distb, items, offset)
+
+    console.log("recursiveFetchMatches airtableResults.data.offset: ", airtableResults.data.offset); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    
+    if (!airtableResults.data.offset) {
+        return airtableResults.data.records
+    } else {
+        const nextPage = await recursiveFetchMatches(distb, items, airtableResults.data.offset)
+        return [...airtableResults.data.records, ...nextPage]
+    }
 }
 
 
@@ -43,15 +54,18 @@ const recursiveFetchMatches = async(distb, items, offset) => {
 router.post('/match', async(req, res) => {
     // console.log(req.body.distbs)
     const distbs = JSON.parse(req.body.distbs)
-    // console.log(distbs)
+    console.log(distbs["KEHE"].length)
     let matches = {}
     let distbsArray = Object.entries(distbs)
     
     for (const [distb, items] of distbsArray) {
         try{
-            const airtableResults = await itemActions.fetchMatches(distb, items)
-            console.log(airtableResults.data)
-            const records = airtableResults.data.records
+            // const airtableResults = await itemActions.fetchMatches(distb, items, null)
+            const airtableResults = await recursiveFetchMatches(distb, items, null)
+
+            console.log(airtableResults.length)
+
+            const records = airtableResults
     
             records.forEach((record) => {
                 const distbId = record.fields['DISTB_ID']
