@@ -5,7 +5,6 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const bodyParser = require("body-parser");
-const converter = require("./routes/api/converter");
 const harmonize = require("./routes/api/harmonize");
 
 if (process.env.NODE_ENV === "production") {
@@ -24,7 +23,6 @@ app.use(fileUpload());
 app.use('/public', express.static(__dirname + '/public'));
 
 app.get("/", (req, res) => res.send("Hello Worlds"));
-app.use("/api/converter", converter)
 
 app.use("/api/harmonize", harmonize)
 

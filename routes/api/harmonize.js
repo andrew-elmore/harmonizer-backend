@@ -37,12 +37,9 @@ router.post('/upload', (req, res, next) => {
 })
 
 const recursiveFetchMatches = async(distb, items, offset) => {
-    console.log("recursiveFetchMatches items.length: ", items.length); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     
     const airtableResults = await itemActions.fetchMatches(distb, items, offset)
 
-    console.log("recursiveFetchMatches airtableResults.data.offset: ", airtableResults.data.offset); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    
     if (!airtableResults.data.offset) {
         return airtableResults.data.records
     } else {
