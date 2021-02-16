@@ -12,6 +12,7 @@ const Mapping = (props) => {
     const [distbId, setDistibId] = useState('')
     const [distb, setDistib] = useState('')
     const [product, setProduct] = useState('')
+    const [upc, setUpc] = useState('')
 
 
     
@@ -22,12 +23,26 @@ const Mapping = (props) => {
     if (sourceFields.includes('DISTB_ID')) { setDistibId('DISTB_ID')}
     if (sourceFields.includes('DISTB')) { setDistibId('DISTB')}
     if (sourceFields.includes('PRODUCT')) { setProduct('PRODUCT')}
+    // if (sourceFields.includes('UPC')) { setUpc('UPC')}
 
     const conversionFields = [
         ['DISTB_ID', (sourceField) => { setDistibId(sourceField)}, distbId],
         ['DISTB', (sourceField) => { setDistib(sourceField)}, distb],
         ['PRODUCT', (sourceField) => { setProduct(sourceField)}, product],
+        ['UPC', (sourceField) => { setUpc(sourceField)}, upc],
     ]
+
+    const xButton = (stateField, setField) => {
+        let buttonType = mappingStyle.line.unselectedButton
+        if (null === stateField) { buttonType = mappingStyle.line.selectedButton }
+        return (
+            <button
+                key={'x'}
+                style={{ ...buttonType }}
+                onClick={() => { setField(null) }}
+            >X</button>
+        )
+    }
     return (
         <div style={mappingStyle.container}>
                 {conversionFields.map(([title, setField, stateField]) => {
@@ -44,12 +59,14 @@ const Mapping = (props) => {
                                         onClick={() => { setField(sourceField) }}
                                     >{sourceField}</button>)
                                 })}
+                                
+                                {xButton(stateField, setField)}
                             </div>
                         )
                 })}
             <button 
                 style={{ ...mappingStyle.submitButton }}
-                onClick={() => { props.submitMapping(distb, distbId, product)}}
+                onClick={() => { props.submitMapping(distb, distbId, product, upc)}}
             >Map Fields</button>
         </div>
     )

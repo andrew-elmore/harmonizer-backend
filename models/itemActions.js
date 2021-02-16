@@ -18,7 +18,6 @@ module.exports = {
                 i ++
                 address += `FIND("${item}",{DISTB_ID}), `
             })
-            console.log("fetchMatches i: ", i); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             
             address = address.slice(0, -2)
             address += ")"
@@ -28,7 +27,6 @@ module.exports = {
                 return airtable.get(address)
             }
         } catch (err) {
-            console.log('failed')
             console.log(err)
         }
     }

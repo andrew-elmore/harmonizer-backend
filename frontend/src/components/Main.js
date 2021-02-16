@@ -114,7 +114,6 @@ class Main extends React.Component {
     fetchMatches(sourceData) {
         const distbs = {}
         sourceData.forEach((row) => {
-            // console.log(row["distbId"], ': ', row["distbId"].length)
             if (row["distbId"].length != 0){
                 if (distbs[row["distb"]]) {
                     distbs[row["distb"]].push(row["distbId"])
@@ -153,7 +152,6 @@ class Main extends React.Component {
                         if (exactMatches.length === 1){
                             matchedItem = matchedItems[0]
                         } else {
-                            console.log(matchedItems)
                             if (unmatchedData.filter((item) => { return (item.product === row.product) }).length === 0) {
                                 unmatchedData.push({ ...row, potentialMatches: matchedItems })
                             }
@@ -186,16 +184,20 @@ class Main extends React.Component {
         });
     }
 
-    submitMapping(distbName, distbIdName, productName) {
+    submitMapping(distbName, distbIdName, productName, upcName) {
         const rawData = this.state.rawData
         let mappedData = rawData.map((row) => {
             let nums = '1234567890'
             let distbId = row[distbIdName].split('').filter((char) => { return nums.includes(char)}).join('')
-            console.log(distbId)
+            // let upc = ''
+            // if (upcName) {
+            //     upc = row[upcName]
+            // }
             return {
                 distb: row[distbName],
                 distbId: distbId,
-                product: row[productName]
+                product: row[productName],
+                upc: row[upcName] || ''
             }
         });
         mappedData = mappedData.filter((row) => { return (row['distbId'].length != 0)})
@@ -219,7 +221,7 @@ class Main extends React.Component {
             body: data,
         }).then(response => response.json())
         .then((data) => {
-            // console.log(data)
+            console.log(data)
             this.setState({ ['rawData']: data })
         });
     }
@@ -229,7 +231,7 @@ class Main extends React.Component {
     render() {
         return (
             <div>
-                {/* <button onClick={() => { console.log(this.state) }}>See State</button> */}
+                <button onClick={() => { console.log(this.state) }}>See State</button>
                 <form 
                     onSubmit={this.handleUpload}>
                     <div style={uploadStyle.container}>
@@ -244,7 +246,7 @@ class Main extends React.Component {
                 </form>
                 <Mapping
                     rawData={this.state.rawData}
-                    submitMapping={(distbName, distbIdName, productName) => { this.submitMapping(distbName, distbIdName, productName)}}
+                    submitMapping={(distbName, distbIdName, productName, upcName) => { this.submitMapping(distbName, distbIdName, productName, upcName)}}
                 />
                 <Approval
                     createCsv={(fileName) => { this.createCsv(fileName) }}
