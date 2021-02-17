@@ -17,6 +17,24 @@ export const uploadStyle = {
         },
         button: {
             ...button
+        },
+        indexButton: {
+            outline: 'none',
+            display: 'flex',
+            padding: 0,
+            borderRadius: 2,
+            margin: 15
+        },
+        upcIndexButton:{
+            borderRadius: '0px 2px 2px 0px',
+            padding: 2,
+            paddingLeft: 5
+        },
+        distbIdIndexButton:{
+            borderRadius: '2px 0px 0px 2px',
+            padding: 2,
+            paddingRight: 5
+
         }
     }
 
@@ -54,12 +72,7 @@ export const mappingStyle = {
             margin: 10,
             padding: 2
         },
-        indexButton: {
-            ...button,
-            display: 'flex',
-            padding: 0,
-            borderRadius: 2
-        }
+
     }
 
     export const matchedStyle = {

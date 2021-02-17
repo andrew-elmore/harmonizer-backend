@@ -22,7 +22,6 @@ router.post('/upload', (req, res, next) => {
         }
 
         csvtojson().fromFile(destination).then(async (source) => {
-            console.log(source)
             res.send(source)
 
             setTimeout(() => {
@@ -39,7 +38,6 @@ router.post('/upload', (req, res, next) => {
 const recursiveFetchMatches = async(distb, items, offset) => {
     
     const airtableResults = await itemActions.fetchMatches(distb, items, offset)
-    console.log("recursiveFetchMatches airtableResults.data.records: ", airtableResults.data.records.length); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     
     if (!airtableResults.data.offset) {
         return airtableResults.data.records
@@ -50,43 +48,72 @@ const recursiveFetchMatches = async(distb, items, offset) => {
 }
 
 
+const mapAirtableResultsUpc = (matches, airtableResults, distb) => {
+    console.log("mapAirtableResultsUpc airtableResults.length: ", airtableResults.length); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+
+    const records = airtableResults
+
+    records.forEach((record) => {
+        const dbDistbId = record.fields['DISTB_ID']
+        const tlId = record.fields['TL_ID']
+        const labelType = record.fields['LABEL_TYPE']
+        const dbProductName = record.fields['PRODUCT']
+        const upc = record.fields['UPC']
+        if (matches[distb]) {
+            matches[distb][upc] = { tlId, dbProductName, labelType, dbDistbId }
+        } else {
+            matches[distb] = {}
+            matches[distb][upc] = { tlId, dbProductName, labelType, dbDistbId }
+        }
+    })
+}
+
+const mapAirtableResultsDistbId = (matches, airtableResults, distb) => {
+    console.log("mapAirtableResultsDistbId airtableResults.length: ", airtableResults.length); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    
+
+    const records = airtableResults
+
+    records.forEach((record) => {
+        const distbId = record.fields['DISTB_ID']
+        const tlId = record.fields['TL_ID']
+        const labelType = record.fields['LABEL_TYPE']
+        const dbProductName = record.fields['PRODUCT']
+        const upc = record.fields['UPC']
+        if (matches[distb]) {
+            matches[distb][distbId] = { tlId, dbProductName, labelType, upc}
+        } else {
+            matches[distb] = {}
+            matches[distb][distbId] = { tlId, dbProductName, labelType, upc}
+        }
+    })
+}
 
 router.post('/match', async(req, res) => {
-    // console.log(req.body.distbs)
+    console.log(req.body.indexingIdType)
+    const indexingIdType = JSON.parse(req.body.indexingIdType)
     const distbs = JSON.parse(req.body.distbs)
-    console.log(distbs)
     let matches = {}
     let distbsArray = Object.entries(distbs)
     
     for (const [distb, items] of distbsArray) {
         try{
-            // const airtableResults = await itemActions.fetchMatches(distb, items, null)
             const airtableResults = await recursiveFetchMatches(distb, items, null)
-
-            console.log(airtableResults.length)
-
-            const records = airtableResults
-    
-            records.forEach((record) => {
-                const distbId = record.fields['DISTB_ID']
-                const tlId = record.fields['TL_ID']
-                const labelType = record.fields['LABEL_TYPE']
-                const dbProductName = record.fields['PRODUCT']
-                if(matches[distb]){
-                    matches[distb][distbId] = { tlId, dbProductName, labelType }
-                } else {
-                    matches[distb] = {}
-                    matches[distb][distbId] = { tlId, dbProductName, labelType}
-                }
-            })
+            console.log(indexingIdType === 'distbId')
+            if (indexingIdType === 'distbId'){
+                mapAirtableResultsDistbId(matches, airtableResults, distb)
+            } else {
+                mapAirtableResultsUpc(matches, airtableResults, distb)
+            }
         } catch (err){
             console.log(err)
         }
     }
-
-    // console.log(matches)
+    console.log(matches)
     res.send(matches)
 })
+
 
 router.post('/download', async(req, res) => {
     const matchedData = JSON.parse(req.body.matchedData)

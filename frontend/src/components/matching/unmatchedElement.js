@@ -36,6 +36,12 @@ const UnmatchedElement = (props) => {
                 />
                 <br />
                 <br />
+                UPC: <input
+                    value={unmatchedItem.upc}
+                    onChange={handleChange('upc')}
+                />
+                <br />
+                <br />
                 <div>PRODUCT: {unmatchedItem.product}</div>
             </div>
 
@@ -46,6 +52,7 @@ const UnmatchedElement = (props) => {
                         <div>TL_ID: {potentialMatch.tlId}</div>
                         <div>LABEL_TYPE: {potentialMatch.labelType}</div>
                         <div>PRODUCT: {potentialMatch.dbProductName}</div>
+                        <div>UPC: {potentialMatch.dbUpc}</div>
                         <button
                             style={{...unmatchedStyle.searchButton, marginBottom: 10}}
                             onClick={() => { 

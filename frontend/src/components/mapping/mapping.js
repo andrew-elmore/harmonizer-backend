@@ -13,8 +13,8 @@ const Mapping = (props) => {
     const [distb, setDistib] = useState('')
     const [product, setProduct] = useState('')
     const [upc, setUpc] = useState('')
-    const [selectedIndexType, setSelectedIndexType] = useState('DISTB_ID')
-
+    const indexingIdType = props.indexingIdType
+    const setIndexingIdType = props.setIndexingIdType
 
     
     if (props.rawData.length === 0) {return null}
@@ -45,31 +45,7 @@ const Mapping = (props) => {
         )
     }
 
-    const selectedIndexTypeButton = () => {
-        let selected = {backgroundColor: tLBlue, color: 'white'}
-        let upcStyle = selectedIndexType === 'UPC' ? { ...mappingStyle.upcIndexButton, ...selected } : { ...mappingStyle.upcIndexButton}
-        let distbIdStyle = selectedIndexType === 'DISTB_ID' ? { ...mappingStyle.upcIndexButton, ...selected } : { ...mappingStyle.upcIndexButton}
-
-        return (
-            <button
-                style={mappingStyle.indexButton}
-                onClick={() => {
-                    if (selectedIndexType === 'UPC') {
-                        setSelectedIndexType('DISTB_ID')
-                    } else {
-                        setSelectedIndexType('UPC')
-                    }
-                }}
-            >
-                <div
-                    style={distbIdStyle}
-                >DISTB_ID</div>
-                <div
-                    style={upcStyle}
-                >UPC</div>
-            </button>
-        )
-    }
+ 
 
 
     return (
@@ -93,8 +69,7 @@ const Mapping = (props) => {
                             </div>
                         )
                 })}
-            {selectedIndexTypeButton()}
-            <br/>
+
             <button 
                 style={{ ...mappingStyle.submitButton }}
                 onClick={() => { props.submitMapping(distb, distbId, product, upc)}}
