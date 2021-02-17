@@ -16,12 +16,15 @@ module.exports = {
             let i = 0
             items.forEach(({distbId, upc}) => {
                 i ++
-                if (upc != '' && distbId != ''){
+                console.log("fetchMatches distbId: ", distbId); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                console.log("fetchMatches upc: ", upc); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                
+                if (upc != '' && distbId != undefined){
                     address += `OR(FIND("${distbId}",{DISTB_ID}), {UPC}="${upc}"), `
                 } else if(upc === ''){
                     address += `FIND("${distbId}",{DISTB_ID}), `
                 } else {
-                    address += `{UPC}="${upc}", `
+                    address += `FIND("${upc}",{UPC}), `
 
                 }
             })

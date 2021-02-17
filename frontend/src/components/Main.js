@@ -68,20 +68,25 @@ class Main extends React.Component {
 
     //Upload
     handleUpload(ev) {
-        ev.preventDefault();
-        this.name = this.uploadInput.files[0].name
-        const data = new FormData();
-        data.append('file', this.uploadInput.files[0]);
-        data.append('filename', 'convert');
+        try{
 
-        fetch(`${this.url}/api/harmonize/upload`, {
-            method: 'POST',
-            body: data,
-        }).then(response => response.json())
-            .then((data) => {
-                console.log(data)
-                this.setState({ ['rawData']: data })
-            });
+            ev.preventDefault();
+            this.name = this.uploadInput.files[0].name
+            const data = new FormData();
+            data.append('file', this.uploadInput.files[0]);
+            data.append('filename', 'convert');
+    
+            fetch(`${this.url}/api/harmonize/upload`, {
+                method: 'POST',
+                body: data,
+            }).then(response => response.json())
+                .then((data) => {
+                    console.log(data)
+                    this.setState({ ['rawData']: data })
+                });
+        } catch (err){
+            console.log(err)
+        }
     }
 
     //Mapping
@@ -121,13 +126,13 @@ class Main extends React.Component {
         
         const distbs = {}
         sourceData.forEach((row) => {
-            if (row["distbId"].length != 0){
+            // if (row["distbId"].length != 0){
                 if (distbs[row["distb"]]) {
                     distbs[row["distb"]].push({distbId: row["distbId"], upc: row['upc']})
                 } else {
                     distbs[row["distb"]] = [{ distbId: row["distbId"], upc: row['upc'] }]
                 }
-            }
+            // }
         })
         const formData = new FormData();
         formData.append('distbs', JSON.stringify(distbs));
@@ -168,6 +173,7 @@ class Main extends React.Component {
 
         sourceData.forEach((row) => {
             try {
+                if(row.upc.length < 10){throw'too few chars'}
                 let matchedItems = []
                 Object.entries(matches[row.distb]).forEach(([dbUpc, dbItem]) => {
                     if (dbUpc.includes(row.upc)) {
@@ -182,7 +188,7 @@ class Main extends React.Component {
 
 
                 } else {
-                    let exactMatches = matchedItems.filter((item) => { return row.distbId === item.dbDistbId })
+                    let exactMatches = matchedItems.filter((item) => { return row.upc === item.dbUpc })
                     if (exactMatches.length === 1) {
                         matchedItem = matchedItems[0]
                     } else {
@@ -197,7 +203,8 @@ class Main extends React.Component {
                     ['labelType']: matchedItem.labelType,
                     ["tlId"]: matchedItem.tlId,
                     ["dbProductName"]: matchedItem.dbProductName,
-                    ["distbId"]: matchedItem.dbDistbId
+                    ["distbId"]: matchedItem.dbDistbId,
+                    ["dbUpc"]: matchedItem.dbUpc
                 })
                 unmatchedData = unmatchedData.filter((item) => { return item.product != row.product })
             } catch (err) {
@@ -248,7 +255,8 @@ class Main extends React.Component {
                     ['labelType']: matchedItem.labelType,
                     ["tlId"]: matchedItem.tlId,
                     ["dbProductName"]: matchedItem.dbProductName,
-                    ["distbId"]: matchedItem.dbDistbId
+                    ["distbId"]: matchedItem.dbDistbId,
+                    ["dbUpc"]: matchedItem.dbUpc
                 })
                 unmatchedData = unmatchedData.filter((item) => { return item.product != row.product })
             } catch (err) {

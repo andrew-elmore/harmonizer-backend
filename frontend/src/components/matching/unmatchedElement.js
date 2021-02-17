@@ -57,7 +57,7 @@ const UnmatchedElement = (props) => {
                             style={{...unmatchedStyle.searchButton, marginBottom: 10}}
                             onClick={() => { 
                                 selectPotentialMatch(potentialMatch.dbDistbId)
-                                props.fetchMatches([{ ...unmatchedItem, ['distbId']: potentialMatch.dbDistbId}]) 
+                                props.fetchMatches([{ ...unmatchedItem, ['distbId']: potentialMatch.dbDistbId, ['upc']: potentialMatch.dbUpc}]) 
                             }}
                         >Select</button>
                     </div>)
