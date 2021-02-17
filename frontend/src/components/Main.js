@@ -50,7 +50,8 @@ class Main extends React.Component {
                 // { distb: "KEHE", distbId: "10438", product: "Vital Wheat Gluten"}
 
             ],
-            fileName: ''
+            fileName: '',
+            indexingIdType: ''
         };
 
     
@@ -63,6 +64,11 @@ class Main extends React.Component {
         this.createCsv = this.createCsv.bind(this)
         this.approve = this.approve.bind(this)
         this.reject = this.reject.bind(this)
+        this.indexingIdType = this.indexingIdType.bind(this)
+    }
+
+    indexingIdType(type) {
+        this.setState({ ['indexingIdType']: type})
     }
 
     approve(idx) {
@@ -84,6 +90,7 @@ class Main extends React.Component {
             distb: matchedData[idx].distb,
             distbId: matchedData[idx].distbId,
             product: matchedData[idx].product,
+            potentialMatches: []
         })
         matchedData = matchedData.filter((row, i) => { return i != idx})
         this.setState({ 
@@ -110,15 +117,75 @@ class Main extends React.Component {
         download(blob, fileName);
     }
 
+    mapMatches(matches, sourceData){
+        if (this.state.indexingIdType === 'upc'){
+            this.mapUpcMatches(matches, sourceData)
+        } else if (this.state.indexIdType === 'distbId') {
+            this.mapDistbIdMatches(matches, sourceData)
+        }
+    }
+
+    mapUpcMatches(matches, sourceData){
+
+    }
+
+    mapDistbIdMatches(matches, sourceData){
+        const matchedData = this.state.matchedData
+        let unmatchedData = this.state.unmatchedData
+
+        sourceData.forEach((row) => {
+            try {
+                let matchedItems = []
+                Object.entries(matches[row.distb]).forEach(([dbDistbId, dbItem]) => {
+                    if (dbDistbId.includes(row.distbId)) {
+                        matchedItems.push({ ...dbItem, dbDistbId })
+                    }
+                })
+                let matchedItem = null
+                if (matchedItems.length === 1) {
+                    matchedItem = matchedItems[0]
+
+
+                } else {
+                    let exactMatches = matchedItems.filter((item) => { return row.distbId === item.dbDistbId })
+                    if (exactMatches.length === 1) {
+                        matchedItem = matchedItems[0]
+                    } else {
+                        if (unmatchedData.filter((item) => { return (item.product === row.product) }).length === 0) {
+                            unmatchedData.push({ ...row, potentialMatches: matchedItems })
+                        }
+                        throw 'not Found';
+                    }
+                }
+                matchedData.unshift({
+                    ...row,
+                    ['labelType']: matchedItem.labelType,
+                    ["tlId"]: matchedItem.tlId,
+                    ["dbProductName"]: matchedItem.dbProductName,
+                    ["distbId"]: matchedItem.dbDistbId
+                })
+                unmatchedData = unmatchedData.filter((item) => { return item.product != row.product })
+            } catch (err) {
+                console.log(err)
+            }
+        });
+
+        this.setState({
+            ["matchedData"]: matchedData,
+            ["unmatchedData"]: unmatchedData,
+            ['mappedData']: []
+        })
+    }
+
 
     fetchMatches(sourceData) {
         const distbs = {}
         sourceData.forEach((row) => {
             if (row["distbId"].length != 0){
                 if (distbs[row["distb"]]) {
-                    distbs[row["distb"]].push(row["distbId"])
+                    distbs[row["distb"]].push({distbId: row["distbId"], upc: row['upc']})
                 } else {
-                    distbs[row["distb"]] = [(row["distbId"])]
+                    distbs[row["distb"]] = [{ distbId: row["distbId"], upc: row['upc'] }]
                 }
             }
         })
@@ -131,55 +198,7 @@ class Main extends React.Component {
         })
         .then(response => response.json())
         .then((matches) => {            
-            const matchedData = this.state.matchedData
-            let unmatchedData = this.state.unmatchedData
-
-            sourceData.forEach((row) => {
-                try{
-                    let matchedItems = []
-                    Object.entries(matches[row.distb]).forEach(([dbDistbId, dbItem])=>{
-                        if (dbDistbId.includes(row.distbId)){
-                            matchedItems.push({...dbItem, dbDistbId})
-                        }
-                    })
-                    let matchedItem = null
-                    if (matchedItems.length === 1) {
-                        matchedItem = matchedItems[0]
-
-                        
-                    } else {
-                        let exactMatches = matchedItems.filter((item) => { return row.distbId === item.dbDistbId })
-                        if (exactMatches.length === 1){
-                            matchedItem = matchedItems[0]
-                        } else {
-                            if (unmatchedData.filter((item) => { return (item.product === row.product) }).length === 0) {
-                                unmatchedData.push({ ...row, potentialMatches: matchedItems })
-                            }
-                            throw 'not Found';
-                        }
-                    }
-                    matchedData.unshift({
-                            ...row, 
-                            ['labelType']: matchedItem.labelType,
-                            ["tlId"]: matchedItem.tlId, 
-                            ["dbProductName"]: matchedItem.dbProductName,
-                            ["distbId"]: matchedItem.dbDistbId
-                        })
-                    unmatchedData = unmatchedData.filter((item) => {return item.product != row.product})
-                } catch (err) {
-                    console.log(err)
-                    // console.log(matchedItems)
-                    // if (unmatchedData.filter((item) => { return( item.product === row.product ) }).length === 0){
-                    //     unmatchedData.push(row)
-                    // }
-                }
-            });
-
-            this.setState({
-                ["matchedData"]: matchedData,
-                ["unmatchedData"]: unmatchedData,
-                ['mappedData']: []
-            })
+            this.mapMatches(matches, sourceData)
 
         });
     }
@@ -188,7 +207,10 @@ class Main extends React.Component {
         const rawData = this.state.rawData
         let mappedData = rawData.map((row) => {
             let nums = '1234567890'
-            let distbId = row[distbIdName].split('').filter((char) => { return nums.includes(char)}).join('')
+            let distbId
+            if (row[distbIdName]){
+                distbId = row[distbIdName].split('').filter((char) => { return nums.includes(char)}).join('')
+            }
             // let upc = ''
             // if (upcName) {
             //     upc = row[upcName]
@@ -200,7 +222,7 @@ class Main extends React.Component {
                 upc: row[upcName] || ''
             }
         });
-        mappedData = mappedData.filter((row) => { return (row['distbId'].length != 0)})
+        mappedData = mappedData.filter((row) => { return (row[this.state.indexingIdType].length != 0)})
         this.setState({
             ["rawData"]: [],
             ["mappedData"]: mappedData
@@ -247,6 +269,7 @@ class Main extends React.Component {
                 <Mapping
                     rawData={this.state.rawData}
                     submitMapping={(distbName, distbIdName, productName, upcName) => { this.submitMapping(distbName, distbIdName, productName, upcName)}}
+                    indexingIdType={(type) => { this.indexingIdType(type) }}
                 />
                 <Approval
                     createCsv={(fileName) => { this.createCsv(fileName) }}

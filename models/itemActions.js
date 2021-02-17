@@ -14,9 +14,16 @@ module.exports = {
         try{
             let address = `/${distributor}?filterByFormula=OR(`
             let i = 0
-            items.forEach((item) => {
+            items.forEach(({distbId, upc}) => {
                 i ++
-                address += `FIND("${item}",{DISTB_ID}), `
+                if (upc != '' && distbId != ''){
+                    address += `OR(FIND("${distbId}",{DISTB_ID}), {UPC}="${upc}"), `
+                } else if(upc === ''){
+                    address += `FIND("${distbId}",{DISTB_ID}), `
+                } else {
+                    address += `{UPC}="${upc}", `
+
+                }
             })
             
             address = address.slice(0, -2)

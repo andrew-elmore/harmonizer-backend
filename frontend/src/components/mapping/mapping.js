@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { mappingStyle } from './../styles'
+import { mappingStyle, tLBlue } from './../styles'
 
 const Mapping = (props) => {
 
@@ -13,6 +13,7 @@ const Mapping = (props) => {
     const [distb, setDistib] = useState('')
     const [product, setProduct] = useState('')
     const [upc, setUpc] = useState('')
+    const [selectedIndexType, setSelectedIndexType] = useState('DISTB_ID')
 
 
     
@@ -43,6 +44,34 @@ const Mapping = (props) => {
             >X</button>
         )
     }
+
+    const selectedIndexTypeButton = () => {
+        let selected = {backgroundColor: tLBlue, color: 'white'}
+        let upcStyle = selectedIndexType === 'UPC' ? { ...mappingStyle.upcIndexButton, ...selected } : { ...mappingStyle.upcIndexButton}
+        let distbIdStyle = selectedIndexType === 'DISTB_ID' ? { ...mappingStyle.upcIndexButton, ...selected } : { ...mappingStyle.upcIndexButton}
+
+        return (
+            <button
+                style={mappingStyle.indexButton}
+                onClick={() => {
+                    if (selectedIndexType === 'UPC') {
+                        setSelectedIndexType('DISTB_ID')
+                    } else {
+                        setSelectedIndexType('UPC')
+                    }
+                }}
+            >
+                <div
+                    style={distbIdStyle}
+                >DISTB_ID</div>
+                <div
+                    style={upcStyle}
+                >UPC</div>
+            </button>
+        )
+    }
+
+
     return (
         <div style={mappingStyle.container}>
                 {conversionFields.map(([title, setField, stateField]) => {
@@ -64,6 +93,8 @@ const Mapping = (props) => {
                             </div>
                         )
                 })}
+            {selectedIndexTypeButton()}
+            <br/>
             <button 
                 style={{ ...mappingStyle.submitButton }}
                 onClick={() => { props.submitMapping(distb, distbId, product, upc)}}

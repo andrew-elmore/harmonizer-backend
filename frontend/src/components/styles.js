@@ -1,6 +1,6 @@
-const tLBlue = 'rgb(30, 98, 130)'
-const tLRed = 'rgb(130, 30, 30)'
-const tLGreen = 'rgb(0, 124, 60)'
+export const tLBlue = 'rgb(30, 98, 130)'
+export const tLRed = 'rgb(130, 30, 30)'
+export const tLGreen = 'rgb(0, 124, 60)'
 
 const button = {
     display: 'inline-block',
@@ -50,7 +50,15 @@ export const mappingStyle = {
         submitButton: {
             ...button,
             backgroundColor: tLGreen,
-            color: 'white'
+            color: 'white',
+            margin: 10,
+            padding: 2
+        },
+        indexButton: {
+            ...button,
+            display: 'flex',
+            padding: 0,
+            borderRadius: 2
         }
     }
 
@@ -101,6 +109,7 @@ export const mappingStyle = {
             }
         }
     }
+
 
 
 export const unmatchedStyle = {
