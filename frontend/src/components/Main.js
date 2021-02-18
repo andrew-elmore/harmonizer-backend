@@ -14,20 +14,20 @@ class Main extends React.Component {
 
         this.state = {
             rawData: [
-                { "ID": '475517', "Supplier": 'UNFI', "name": 'Mind, Body and Soul' },
-                { "ID": '303537', "Supplier": 'UNFI', "name": 'Mind, Body and Soul' },
-                { "ID": '457481', "Supplier": 'UNFI', "name": 'Earl Grey Black Tea' },
-                { "ID": '684514', "Supplier": 'UNFI', "name": 'Fair Trade English Breakfast Tea' },
-                { "ID": '736488', "Supplier": 'UNFI', "name": 'Gunpowder Green Tea (Special Pin Head)' },
-                { "ID": '0272310', "Supplier": 'UNFI', "name": 'Biodynamic' },
-                { "ID": '987420', "Supplier": 'UNFI', "name": 'Breakfast Blend' },
-                { "ID": '992883', "Supplier": 'UNFI', "name": 'Colombian' },
-                { "ID": '1628429', "Supplier": 'KEHE', "name": 'White Rice Flour' },
-                { "ID": '64834', "Supplier": 'KEHE', "name": 'Cornstarch' },
-                { "ID": '340257', "Supplier": 'KEHE', "name": 'Whole Wheat Flour' },
-                { "ID": '113858', "Supplier": 'KEHE', "name": 'Guatemalan Atitlan' },
-                { "ID": '331150', "Supplier": 'KEHE', "name": 'Brown Rice Flour' },
-                { "ID": '10438', "Supplier": 'KEHE', "name": 'Vital Wheat Gluten' },
+                // { "ID": '475517', "Supplier": 'UNFI', "name": 'Mind, Body and Soul' },
+                // { "ID": '303537', "Supplier": 'UNFI', "name": 'Mind, Body and Soul' },
+                // { "ID": '457481', "Supplier": 'UNFI', "name": 'Earl Grey Black Tea' },
+                // { "ID": '684514', "Supplier": 'UNFI', "name": 'Fair Trade English Breakfast Tea' },
+                // { "ID": '736488', "Supplier": 'UNFI', "name": 'Gunpowder Green Tea (Special Pin Head)' },
+                // { "ID": '0272310', "Supplier": 'UNFI', "name": 'Biodynamic' },
+                // { "ID": '987420', "Supplier": 'UNFI', "name": 'Breakfast Blend' },
+                // { "ID": '992883', "Supplier": 'UNFI', "name": 'Colombian' },
+                // { "ID": '1628429', "Supplier": 'KEHE', "name": 'White Rice Flour' },
+                // { "ID": '64834', "Supplier": 'KEHE', "name": 'Cornstarch' },
+                // { "ID": '340257', "Supplier": 'KEHE', "name": 'Whole Wheat Flour' },
+                // { "ID": '113858', "Supplier": 'KEHE', "name": 'Guatemalan Atitlan' },
+                // { "ID": '331150', "Supplier": 'KEHE', "name": 'Brown Rice Flour' },
+                // { "ID": '10438', "Supplier": 'KEHE', "name": 'Vital Wheat Gluten' },
             ],
             mappedData: [
             ],
@@ -204,7 +204,8 @@ class Main extends React.Component {
                     ["tlId"]: matchedItem.tlId,
                     ["dbProductName"]: matchedItem.dbProductName,
                     ["distbId"]: matchedItem.dbDistbId,
-                    ["dbUpc"]: matchedItem.dbUpc
+                    ["dbUpc"]: matchedItem.dbUpc,
+                    ['productData']: matchedItem.productData
                 })
                 unmatchedData = unmatchedData.filter((item) => { return item.product != row.product })
             } catch (err) {
@@ -275,13 +276,8 @@ class Main extends React.Component {
     reject(idx) {
         let matchedData = this.state.matchedData
         let unmatchedData = this.state.unmatchedData
-        unmatchedData.push({
-            distb: matchedData[idx].distb,
-            distbId: matchedData[idx].distbId,
-            product: matchedData[idx].product,
-            upc: matchedData[idx].upc,
-            potentialMatches: []
-        })
+        let itemToUnmatch = matchedData[idx]
+        unmatchedData.push(itemToUnmatch)
         matchedData = matchedData.filter((row, i) => { return i != idx })
         this.setState({
             ['matchedData']: matchedData,

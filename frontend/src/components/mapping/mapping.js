@@ -50,6 +50,7 @@ const Mapping = (props) => {
 
     return (
         <div style={mappingStyle.container}>
+            <h1>Mapping</h1>
                 {conversionFields.map(([title, setField, stateField]) => {
                         return (
                             <div style={mappingStyle.line.container} key={title}>
