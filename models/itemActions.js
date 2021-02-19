@@ -16,8 +16,7 @@ module.exports = {
             let i = 0
             items.forEach(({distbId, upc}) => {
                 i ++
-                console.log("fetchMatches distbId: ", distbId); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                console.log("fetchMatches upc: ", upc); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
                 
                 if (upc != '' && distbId != undefined){
                     address += `OR(FIND("${distbId}",{DISTB_ID}), {UPC}="${upc}"), `
