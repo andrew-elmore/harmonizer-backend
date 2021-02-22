@@ -14,26 +14,26 @@ class Main extends React.Component {
 
         this.state = {
             rawData: [
-                {'ID': '152090', 'price': '1.56', 'plu': '7735', 'distb': 'UNFI', 'brand': 'bionaturae®', 'product': 'Extra Virgin Olive Oil', 'upc': '2250642350'}, 
-                {'ID': '486597', 'price': '7.4', 'plu': '6501', 'distb': 'UNFI', 'brand': "Jimbo's Jumbos", 'product': 'Blanched Peanuts (Oil Roasted, Unsalted)', 'upc': '7418301065'}, 
-                {'ID': '1169580', 'price': '6.66', 'plu': '762', 'distb': 'UNFI', 'brand': 'Napa Valley Naturals®', 'product': 'Safflower Oil', 'upc': '7869691002'}, 
-                {'ID': '393850', 'price': '6.95', 'plu': '242', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'All Vegetable Shortening', 'upc': '22506002708'}, 
-                {'ID': '857649', 'price': '7.75', 'plu': '881', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'High Heat Safflower Oil (Refined)', 'upc': '22506101401'}, 
-                {'ID': '504415', 'price': '4.18', 'plu': '8214', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'High Heat Safflower Oil (Refined)', 'upc': '22506101401'}, 
-                {'ID': '932269', 'price': '4.01', 'plu': '5824', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Safflower Oil (Unrefined)', 'upc': '22506101500'}, 
-                {'ID': '504472', 'price': '2.16', 'plu': '6547', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Sunflower Oil (Refined)', 'upc': '22506117501'}, 
-                {'ID': '226746', 'price': '0.49', 'plu': '8766', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Canola Oil (Refined)', 'upc': '22506134300'}, 
-                {'ID': '961300', 'price': '4.05', 'plu': '2193', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Canola Oil (Refined)', 'upc': '22506134409'}, 
-                {'ID': '508044', 'price': '9.59', 'plu': '2852', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Canola Oil (Refined)', 'upc': '22506138308'}, 
-                {'ID': '641845', 'price': '6.58', 'plu': '7002', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Canola Oil (Refined)', 'upc': '22506138308'}, 
-                {'ID': '402941', 'price': '8.85', 'plu': '4262', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Toasted Sesame Oil (Unrefined)', 'upc': '22506165106'}, 
-                {'ID': '326488', 'price': '8.12', 'plu': '4138', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Red Wine Vinegar', 'upc': '22506260283'}, 
-                {'ID': '326587', 'price': '3.97', 'plu': '6716', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'White Wine Vinegar', 'upc': '22506261280'}, 
-                {'ID': '857482', 'price': '9.3', 'plu': '7050', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Balsamic Vinegar', 'upc': '22506262287'}, 
-                {'ID': '326462', 'price': '0.33', 'plu': '3612', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Apple Cider Vinegar (Unfiltered)', 'upc': '22506270282'}, 
-                {'ID': '300699', 'price': '4.2', 'plu': '8078', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Apple Cider Vinegar (Filtered)', 'upc': '22506281288'}, 
-                {'ID': '960898', 'price': '0.3', 'plu': '5070', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Extra Virgin Olive Oil', 'upc': '22506423305'}, 
-                {'ID': '701607', 'price': '9.48', 'plu': '3886', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Extra Virgin Olive Oil', 'upc': '22506423459'}, 
+                // {'ID': '152090', 'price': '1.56', 'plu': '7735', 'distb': 'UNFI', 'brand': 'bionaturae®', 'product': 'Extra Virgin Olive Oil', 'upc': '2250642350'}, 
+                // {'ID': '486597', 'price': '7.4', 'plu': '6501', 'distb': 'UNFI', 'brand': "Jimbo's Jumbos", 'product': 'Blanched Peanuts (Oil Roasted, Unsalted)', 'upc': '7418301065'}, 
+                // {'ID': '1169580', 'price': '6.66', 'plu': '762', 'distb': 'UNFI', 'brand': 'Napa Valley Naturals®', 'product': 'Safflower Oil', 'upc': '7869691002'}, 
+                // {'ID': '393850', 'price': '6.95', 'plu': '242', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'All Vegetable Shortening', 'upc': '22506002708'}, 
+                // {'ID': '857649', 'price': '7.75', 'plu': '881', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'High Heat Safflower Oil (Refined)', 'upc': '22506101401'}, 
+                // {'ID': '504415', 'price': '4.18', 'plu': '8214', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'High Heat Safflower Oil (Refined)', 'upc': '22506101401'}, 
+                // {'ID': '932269', 'price': '4.01', 'plu': '5824', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Safflower Oil (Unrefined)', 'upc': '22506101500'}, 
+                // {'ID': '504472', 'price': '2.16', 'plu': '6547', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Sunflower Oil (Refined)', 'upc': '22506117501'}, 
+                // {'ID': '226746', 'price': '0.49', 'plu': '8766', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Canola Oil (Refined)', 'upc': '22506134300'}, 
+                // {'ID': '961300', 'price': '4.05', 'plu': '2193', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Canola Oil (Refined)', 'upc': '22506134409'}, 
+                // {'ID': '508044', 'price': '9.59', 'plu': '2852', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Canola Oil (Refined)', 'upc': '22506138308'}, 
+                // {'ID': '641845', 'price': '6.58', 'plu': '7002', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Canola Oil (Refined)', 'upc': '22506138308'}, 
+                // {'ID': '402941', 'price': '8.85', 'plu': '4262', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Toasted Sesame Oil (Unrefined)', 'upc': '22506165106'}, 
+                // {'ID': '326488', 'price': '8.12', 'plu': '4138', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Red Wine Vinegar', 'upc': '22506260283'}, 
+                // {'ID': '326587', 'price': '3.97', 'plu': '6716', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'White Wine Vinegar', 'upc': '22506261280'}, 
+                // {'ID': '857482', 'price': '9.3', 'plu': '7050', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Balsamic Vinegar', 'upc': '22506262287'}, 
+                // {'ID': '326462', 'price': '0.33', 'plu': '3612', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Apple Cider Vinegar (Unfiltered)', 'upc': '22506270282'}, 
+                // {'ID': '300699', 'price': '4.2', 'plu': '8078', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Apple Cider Vinegar (Filtered)', 'upc': '22506281288'}, 
+                // {'ID': '960898', 'price': '0.3', 'plu': '5070', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Extra Virgin Olive Oil', 'upc': '22506423305'}, 
+                // {'ID': '701607', 'price': '9.48', 'plu': '3886', 'distb': 'UNFI', 'brand': 'Spectrum Naturals', 'product': 'Extra Virgin Olive Oil', 'upc': '22506423459'}, 
             ],
             mappedData: [
  
@@ -102,7 +102,6 @@ class Main extends React.Component {
     }
 
     submitMapping(mappedFieldNames) {
-        console.log("submitMapping mappedFieldNames: ", Object.entries(mappedFieldNames)); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 
         const rawData = this.state.rawData
         let mappedData = rawData.map((row) => {
@@ -117,7 +116,6 @@ class Main extends React.Component {
             })
             return mappedRow
         });
-        console.log("submitMapping mappedData: ", mappedData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         mappedData = mappedData.filter((row) => { return (row[this.state.indexingIdType].length != 0) })
         this.setState({
@@ -130,7 +128,6 @@ class Main extends React.Component {
 
     //Matching
     fetchMatches(sourceData) {
-        console.log("fetchMatches sourceData: ", sourceData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         
         const distbs = {}
         sourceData.forEach((row) => {
@@ -152,7 +149,6 @@ class Main extends React.Component {
         })
         .then(response => response.json())
         .then((matches) => {            
-            console.log("fetchMatches matches: ", matches); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             
             
             this.mapMatches(matches, sourceData)
@@ -161,7 +157,6 @@ class Main extends React.Component {
     }
 
     mapMatches(matches, sourceData) {
-        console.log("mapMatches this.state.indexingIdType: ", this.state.indexingIdType); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         if (this.state.indexingIdType === 'upc') {
             this.mapUpcMatches(matches, sourceData)
@@ -175,8 +170,6 @@ class Main extends React.Component {
         const matchedData = this.state.matchedData
         let unmatchedData = this.state.unmatchedData
 
-        console.log("mapUpcMatches matches: ", matches); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        console.log("mapUpcMatches sourceData: ", sourceData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
 
         sourceData.forEach((row) => {
@@ -188,7 +181,6 @@ class Main extends React.Component {
                         matchedItems.push({ ...dbItem, dbUpc })
                     }
                 })
-                console.log("mapUPCMatches row: ", row); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
                 let matchedItem = null
                 if (matchedItems.length === 1) {
@@ -223,7 +215,6 @@ class Main extends React.Component {
             }
         });
 
-        console.log("mapUpcMatches matchedData: ", matchedData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
 
         this.setState({
@@ -261,7 +252,6 @@ class Main extends React.Component {
                         throw 'not Found';
                     }
                 }
-                console.log("mapDistb matchedItem.productData: ", matchedItem.productData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 
                 matchedData.unshift({
                     ...row,
@@ -290,7 +280,7 @@ class Main extends React.Component {
         let matchedData = this.state.matchedData
         let unmatchedData = this.state.unmatchedData
         let itemToUnmatch = matchedData[idx]
-        unmatchedData.push(itemToUnmatch)
+        unmatchedData.push({...itemToUnmatch, ['potentialMatches']: []})
         matchedData = matchedData.filter((row, i) => { return i != idx })
         this.setState({
             ['matchedData']: matchedData,
@@ -345,7 +335,7 @@ class Main extends React.Component {
         }
         return (
             <div>
-                <button onClick={() => { console.log(this.state) }}>See State</button>
+                {/* <button onClick={() => { console.log(this.state) }}>See State</button> */}
                 <form 
                     onSubmit={this.handleUpload}>
                     <div style={uploadStyle.container}>

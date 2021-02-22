@@ -42,6 +42,7 @@ const UnmatchedElement = (props) => {
                 />
                 <br />
                 <br />
+                <div>BRAND: {unmatchedItem.brand}</div>
                 <div>PRODUCT: {unmatchedItem.product}</div>
             </div>
 
@@ -51,6 +52,7 @@ const UnmatchedElement = (props) => {
                         <div>DISTB_ID: {potentialMatch.dbDistbId}</div>
                         <div>TL_ID: {potentialMatch.tlId}</div>
                         <div>LABEL_TYPE: {potentialMatch.labelType}</div>
+                        <div>BRAND: {potentialMatch.productData['BRAND']}</div>
                         <div>PRODUCT: {potentialMatch.dbProductName}</div>
                         <div>UPC: {potentialMatch.dbUpc}</div>
                         <button

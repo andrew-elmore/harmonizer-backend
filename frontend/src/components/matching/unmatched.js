@@ -1,14 +1,21 @@
 import React, {useState}from 'react'
-import { unmatchedStyle} from './../styles'
+import { unmatchedStyle, tLBlue} from './../styles'
 import UnmatchedElement from './unmatchedElement'
 
 
 const Unmatched = (props) => {
 
-    if (props.unmatchedData.length === 0){return null}
+    if (props.unmatchedData.length === 0){return (  null  )}
     return (
         <div style={unmatchedStyle.container}>
-            <h1>Unmatched</h1>
+            <div
+                style={{
+                    color: tLBlue,
+                    fontSize: 25,
+                    fontWeight: 'bold',
+                    textAlign: 'center'
+                }}
+            >Unmatched</div>
 
             {props.unmatchedData.map((unmatchedItem) => {
                 return (

@@ -186,19 +186,24 @@ router.post('/match', async(req, res) => {
 router.post('/download', async(req, res) => {
     const matchedData = JSON.parse(req.body.matchedData)
     console.log(matchedData[0])
+    console.log("/download matchedData[0].productData: ", matchedData[0].productData['BRAND']); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     let csvData = matchedData.map((row) => {
+        const productData = row.productData
+        console.log("/download row.productData['BRAND']: ", row.productData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        
         return({
             ["TL_ID"]: row.tlId,
             ["DISTB_ID"]: row.distbId,
             ["DISTB"]: row.distb,
             ["LABEL_TYPE"]: row.labelType,
+            ["BRAND"]: row.productData["BRAND"],
             ["PRODUCT"]: row.dbProductName,
             ["UPC"]: row.upc,
             ["PRICE"]: row.price,
             ["PLU"]: row.plu,
             ['file product name']: row.product,
 
-            ...row.productData
+            ...productData
         })
     })
 

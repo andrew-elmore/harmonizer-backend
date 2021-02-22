@@ -3,6 +3,7 @@ import { mappingStyle, tLBlue } from './../styles'
 
 const reducer = (state, action) => {
     Object.freeze(state)
+    console.log(action)
     return ({...state, [action.type]: action.payload})
 }
 
@@ -10,16 +11,26 @@ const Mapping = (props) => {
 
 
 
+    // const [state, dispatch] = useReducer(reducer, {
+    //     distbId: 'ID',
+    //     distb: 'distb',
+    //     product: 'product',
+    //     upc: 'upc',
+    //     price: 'price',
+    //     plu: 'plu'
+    // })
+
     const [state, dispatch] = useReducer(reducer, {
-        distbId: 'ID',
-        distb: 'distb',
-        product: 'product',
-        upc: 'upc',
-        price: 'price',
-        plu: 'plu'
+        distbId: '',
+        distb: '',
+        brand: '',
+        product: '',
+        upc: '',
+        price: '',
+        plu: ''
     })
     
-    if (props.rawData.length === 0) {return null}
+    if (props.rawData.length === 0) {return (null)}
 
 
     const sourceFields = Object.keys(props.rawData[0])
@@ -28,6 +39,7 @@ const Mapping = (props) => {
     const conversionFields = {
         distbId: 'DISTB_ID',
         distb: 'DISTB',
+        brand: 'BRAND', 
         product: 'PRODUCT', 
         upc: 'UPC', 
         price: 'PRICE', 
@@ -52,8 +64,14 @@ const Mapping = (props) => {
     console.log(sourceFields)
     return (
         <div style={mappingStyle.container}>
-            <h1>Mapping</h1>
-                {Object.entries(state).map(([fieldName, corespondingField]) => {
+            <div
+                style={{
+                    color: tLBlue,
+                    fontSize: 25,
+                    fontWeight: 'bold',
+                    textAlign: 'center'
+                }}
+            >Mapping</div>                {Object.entries(state).map(([fieldName, corespondingField]) => {
                     const title = conversionFields[fieldName]
                     return (
                         <div style={mappingStyle.line.container} key={title}>
@@ -65,7 +83,7 @@ const Mapping = (props) => {
                                 return (<button
                                     key={sourceField}
                                     style={{ ...buttonType }}
-                                    onClick={() => { dispatch({ type: fieldName, payload: corespondingField}) }}
+                                    onClick={() => { dispatch({ type: fieldName, payload: sourceField}) }}
                                 >{sourceField}</button>)
                             })}
                             
