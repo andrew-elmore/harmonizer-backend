@@ -194,6 +194,8 @@ router.post('/download', async(req, res) => {
             ["LABEL_TYPE"]: row.labelType,
             ["PRODUCT"]: row.dbProductName,
             ["UPC"]: row.upc,
+            ["PRICE"]: row.price,
+            ["PLU"]: row.plu,
             ['file product name']: row.product,
 
             ...row.productData
