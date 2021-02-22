@@ -101,20 +101,21 @@ class Main extends React.Component {
         this.setState({ ['indexingIdType']: type})
     }
 
-    submitMapping(distbName, distbIdName, productName, upcName) {
+    submitMapping(mappedFieldNames) {
+        console.log("submitMapping mappedFieldNames: ", Object.entries(mappedFieldNames)); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                
         const rawData = this.state.rawData
         let mappedData = rawData.map((row) => {
             let nums = '1234567890'
             let distbId
-            if (row[distbIdName]) {
-                distbId = row[distbIdName].split('').filter((char) => { return nums.includes(char) }).join('')
+            if (row[mappedFieldNames['distibId']]) {
+                distbId = row[mappedFieldNames['distibId']].split('').filter((char) => { return nums.includes(char) }).join('')
             }
-            return {
-                distb: row[distbName],
-                distbId: distbId,
-                product: row[productName],
-                upc: row[upcName] || ''
-            }
+            let mappedRow = {}
+            Object.entries(mappedFieldNames).forEach(([fieldName, rowName]) => {
+                mappedRow[fieldName] = row[rowName]
+            })
+            return mappedRow
         });
         console.log("submitMapping mappedData: ", mappedData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 

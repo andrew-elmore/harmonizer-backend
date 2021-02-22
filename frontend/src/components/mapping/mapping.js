@@ -1,52 +1,47 @@
-import React, {useState} from 'react'
+import React, { useState, useReducer} from 'react'
 import { mappingStyle, tLBlue } from './../styles'
+
+const reducer = (state, action) => {
+    Object.freeze(state)
+    return ({...state, [action.type]: action.payload})
+}
 
 const Mapping = (props) => {
 
 
-    
 
-    // const [distb, setDistib] = useState('Supplier')
-    // const [distbId, setDistibId] = useState('ID')
-    // const [product, setProduct] = useState('name')
-    const [distbId, setDistibId] = useState('')
-    const [distb, setDistib] = useState('')
-    const [product, setProduct] = useState('')
-    const [upc, setUpc] = useState('')
-    const [price, setPrice] = useState('')
-    const [plu, setPlu] = useState('')
-
-
-    // const indexingIdType = props.indexingIdType
-    // const setIndexingIdType = props.setIndexingIdType
-
+    const [state, dispatch] = useReducer(reducer, {
+        distbId: 'ID',
+        distb: 'distb',
+        product: 'product',
+        upc: 'upc',
+        price: 'price',
+        plu: 'plu'
+    })
     
     if (props.rawData.length === 0) {return null}
 
 
     const sourceFields = Object.keys(props.rawData[0])
-    if (sourceFields.includes('DISTB_ID')) { setDistibId('DISTB_ID')}
-    if (sourceFields.includes('DISTB')) { setDistibId('DISTB')}
-    if (sourceFields.includes('PRODUCT')) { setProduct('PRODUCT')}
-    // if (sourceFields.includes('UPC')) { setUpc('UPC')}
 
-    const conversionFields = [
-        ['DISTB_ID', (sourceField) => { setDistibId(sourceField) }, distbId],
-        ['DISTB', (sourceField) => { setDistib(sourceField) }, distb],
-        ['PRODUCT', (sourceField) => { setProduct(sourceField) }, product],
-        ['UPC', (sourceField) => { setUpc(sourceField) }, upc],
-        ['PRICE', (sourceField) => { setPrice(sourceField) }, price],
-        ['PLU', (sourceField) => { setPlu(sourceField) }, plu],
-    ]
 
-    const xButton = (stateField, setField) => {
+    const conversionFields = {
+        distbId: 'DISTB_ID',
+        distb: 'DISTB',
+        product: 'PRODUCT', 
+        upc: 'UPC', 
+        price: 'PRICE', 
+        plu: 'PLU', 
+    }
+
+    const xButton = (fieldName) => {
         let buttonType = mappingStyle.line.unselectedButton
-        if (null === stateField) { buttonType = mappingStyle.line.selectedButton }
+        if (null === state.title) { buttonType = mappingStyle.line.selectedButton }
         return (
             <button
                 key={'x'}
                 style={{ ...buttonType }}
-                onClick={() => { setField(null) }}
+                onClick={() => { dispatch({ type: fieldName, payload: null }) }}
             >X</button>
         )
     }
@@ -54,32 +49,35 @@ const Mapping = (props) => {
  
 
 
+    console.log(sourceFields)
     return (
         <div style={mappingStyle.container}>
             <h1>Mapping</h1>
-                {conversionFields.map(([title, setField, stateField]) => {
-                        return (
-                            <div style={mappingStyle.line.container} key={title}>
-                                <div style={mappingStyle.line.title}>{title}: </div>
-                                {sourceFields.map((sourceField) => {
+                {Object.entries(state).map(([fieldName, corespondingField]) => {
+                    const title = conversionFields[fieldName]
+                    return (
+                        <div style={mappingStyle.line.container} key={title}>
+                            <div style={mappingStyle.line.title}>{title}: </div>
+                            {sourceFields.map((sourceField) => {
 
-                                    let buttonType = mappingStyle.line.unselectedButton
-                                    if (sourceField === stateField) { buttonType = mappingStyle.line.selectedButton }
-                                    return (<button
-                                        key={sourceField}
-                                        style={{ ...buttonType }}
-                                        onClick={() => { setField(sourceField) }}
-                                    >{sourceField}</button>)
-                                })}
-                                
-                                {xButton(stateField, setField)}
-                            </div>
-                        )
+                                let buttonType = mappingStyle.line.unselectedButton
+                                if (sourceField === corespondingField) { buttonType = mappingStyle.line.selectedButton }
+                                return (<button
+                                    key={sourceField}
+                                    style={{ ...buttonType }}
+                                    onClick={() => { dispatch({ type: fieldName, payload: corespondingField}) }}
+                                >{sourceField}</button>)
+                            })}
+                            
+                            {xButton(fieldName)}
+                        </div>
+                        
+                    )
                 })}
 
             <button 
                 style={{ ...mappingStyle.submitButton }}
-                onClick={() => { props.submitMapping(distb, distbId, product, upc)}}
+                onClick={() => { props.submitMapping(state)}}
             >Map Fields</button>
         </div>
     )
