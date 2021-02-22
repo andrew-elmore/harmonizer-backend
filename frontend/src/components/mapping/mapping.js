@@ -13,8 +13,12 @@ const Mapping = (props) => {
     const [distb, setDistib] = useState('')
     const [product, setProduct] = useState('')
     const [upc, setUpc] = useState('')
-    const indexingIdType = props.indexingIdType
-    const setIndexingIdType = props.setIndexingIdType
+    const [price, setPrice] = useState('')
+    const [plu, setPlu] = useState('')
+
+
+    // const indexingIdType = props.indexingIdType
+    // const setIndexingIdType = props.setIndexingIdType
 
     
     if (props.rawData.length === 0) {return null}
@@ -27,10 +31,12 @@ const Mapping = (props) => {
     // if (sourceFields.includes('UPC')) { setUpc('UPC')}
 
     const conversionFields = [
-        ['DISTB_ID', (sourceField) => { setDistibId(sourceField)}, distbId],
-        ['DISTB', (sourceField) => { setDistib(sourceField)}, distb],
-        ['PRODUCT', (sourceField) => { setProduct(sourceField)}, product],
-        ['UPC', (sourceField) => { setUpc(sourceField)}, upc],
+        ['DISTB_ID', (sourceField) => { setDistibId(sourceField) }, distbId],
+        ['DISTB', (sourceField) => { setDistib(sourceField) }, distb],
+        ['PRODUCT', (sourceField) => { setProduct(sourceField) }, product],
+        ['UPC', (sourceField) => { setUpc(sourceField) }, upc],
+        ['PRICE', (sourceField) => { setPrice(sourceField) }, price],
+        ['PLU', (sourceField) => { setPlu(sourceField) }, plu],
     ]
 
     const xButton = (stateField, setField) => {
