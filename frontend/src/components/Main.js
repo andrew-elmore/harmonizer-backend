@@ -83,7 +83,8 @@ class Main extends React.Component {
             data.append('file', this.uploadInput.files[0]);
             data.append('filename', 'convert');
     
-            fetch(`${this.url}/api/harmonize/upload`, {
+            // fetch(`${this.url}/api/harmonize/upload`, {
+            fetch(`/api/harmonize/upload`, {
                 method: 'POST',
                 body: data,
             }).then(response => response.json())
@@ -143,7 +144,8 @@ class Main extends React.Component {
         formData.append('distbs', JSON.stringify(distbs));
         formData.append('indexingIdType', JSON.stringify(this.state.indexingIdType));
 
-        fetch(`${this.url}/api/harmonize/match`, {
+        // fetch(`${this.url}/api/harmonize/match`, {
+        fetch(`/api/harmonize/match`, {
             method: 'POST',
             body: formData,
         })
@@ -293,7 +295,8 @@ class Main extends React.Component {
         const formData = new FormData();
         formData.append('matchedData', JSON.stringify(this.state.matchedData));
 
-        fetch(`${this.url}/api/harmonize/download`, {
+        // fetch(`${this.url}/api/harmonize/download`, {
+        fetch(`/api/harmonize/download`, {
             method: 'POST',
             body: formData,
         })
