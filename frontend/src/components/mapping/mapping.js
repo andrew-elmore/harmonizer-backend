@@ -10,16 +10,6 @@ const reducer = (state, action) => {
 const Mapping = (props) => {
 
 
-
-    // const [state, dispatch] = useReducer(reducer, {
-    //     distbId: 'ID',
-    //     distb: 'distb',
-    //     product: 'product',
-    //     upc: 'upc',
-    //     price: 'price',
-    //     plu: 'plu'
-    // })
-
     const [state, dispatch] = useReducer(reducer, {
         distbId: '',
         distb: '',

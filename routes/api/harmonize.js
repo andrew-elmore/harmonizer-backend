@@ -140,7 +140,7 @@ const mapAirtableResultsDistbId = (matches, airtableResults, distb) => {
     const records = airtableResults
 
     records.forEach((record) => {
-        console.log("records.forEach record.fields: ", record.fields["BRAND_NAME"]); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        // console.log("records.forEach record.fields: ", record.fields["BRAND_NAME"]); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         
         const distbId = record.fields['DISTB_ID']
         const tlId = record.fields['TL_ID']
