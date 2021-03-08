@@ -23,6 +23,7 @@ const Unmatched = (props) => {
                         key={unmatchedItem.distbId}
                         unmatchedItem={unmatchedItem}
                         fetchMatches={(item) => { props.fetchMatches(item) }}
+                        notInDatabase={(item) => { props.notInDatabase(item)}}
                     />
                 )
             })}

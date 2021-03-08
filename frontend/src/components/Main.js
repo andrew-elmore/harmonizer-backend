@@ -71,6 +71,7 @@ class Main extends React.Component {
         this.createCsv = this.createCsv.bind(this)
         this.reject = this.reject.bind(this)
         this.setIndexingIdType = this.setIndexingIdType.bind(this)
+        this.notInDatabase = this.notInDatabase.bind(this)
     }
 
     //Upload
@@ -283,6 +284,29 @@ class Main extends React.Component {
         })
     }
 
+
+    notInDatabase(item) {
+        const matchedData = this.state.matchedData
+        let unmatchedData = this.state.unmatchedData
+        matchedData.unshift({
+            ...item,
+            ['labelType']: '',
+            ["tlId"]: '',
+            ["dbProductName"]: '',
+            ["distbId"]: item.distbId,
+            ["dbUpc"]: item.upc,
+            ['productData']: { ['BRAND']: item.brand, ['PRODUCT']: item.product, }
+        })
+        unmatchedData = unmatchedData.filter((row) => { 
+            console.log('row', row)
+            console.log('item', item)
+            return item.product != row.product 
+        })
+        this.setState({
+            ["matchedData"]: matchedData,
+            ["unmatchedData"]: unmatchedData
+        })
+    }
     //Matches
     reject(idx) {
         let matchedData = this.state.matchedData
@@ -372,6 +396,7 @@ class Main extends React.Component {
                 <Unmatched
                     unmatchedData={this.state.unmatchedData}
                     fetchMatches={(item) => {this.fetchMatches(item)}}
+                    notInDatabase={(item) => { this.notInDatabase(item)}}
                 />
                 <Matched
                     matchedData={this.state.matchedData}

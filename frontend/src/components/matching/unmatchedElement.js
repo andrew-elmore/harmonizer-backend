@@ -70,6 +70,12 @@ const UnmatchedElement = (props) => {
                         props.fetchMatches([{ ...unmatchedItem}])
                     }}
                 >Search</button>
+                <button
+                    style={{ ...unmatchedStyle.searchButton, marginBottom: 10 }}
+                    onClick={() => {
+                        props.notInDatabase(unmatchedItem)
+                    }}
+                >Not In Database</button>
             </div>
         </div>
 
