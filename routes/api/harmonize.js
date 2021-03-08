@@ -175,10 +175,20 @@ router.post('/match', async(req, res) => {
                 mapAirtableResultsUpc(matches, airtableResults, distb)
             }
         } catch (err){
-            console.log(err)
+            console.log(err.response.status)
         }
     }
     console.log(matches)
+    const unsortedMdfMainViewMatches = Object.entries(matches['MDF%20Main%20View'])
+    unsortedMdfMainViewMatches.forEach(([id, item]) => {
+        distb = item.productData['DISTB'].replace('#', '')
+        if (matches[distb]){
+            matches[distb][id] = item
+        } else {
+            matches[distb] = {[id]: item}
+        }
+    })
+    delete matches['MDF%20Main%20View']
     res.send(matches)
 })
 
@@ -227,3 +237,6 @@ router.post('/download', async(req, res) => {
 })
 
 module.exports = router;
+
+
+// /MDF%20Main%20View?filterByFormula=OR(AND({DISTB}="SV#",FIND("2914190",{DISTB_ID})), AND({DISTB}="SOS#",FIND("3255",{DISTB_ID})))

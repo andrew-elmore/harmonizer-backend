@@ -11,7 +11,7 @@ const Mapping = (props) => {
 
 
     const [state, dispatch] = useReducer(reducer, {
-        distbId: '',
+        distbId: 'DistbID',
         distb: '',
         brand: '',
         product: '',

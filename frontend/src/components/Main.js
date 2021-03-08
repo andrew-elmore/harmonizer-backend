@@ -11,7 +11,7 @@ import { uploadStyle, tLBlue} from './styles'
 class Main extends React.Component {
     constructor(props) {
         super(props);
-
+        this.separateMdfFields = ['UNFI', 'UNFIW', 'KEHE', 'FTC', 'GBF']
         this.state = {
             rawData: [
                 // {'ID': '152090', 'price': '1.56', 'plu': '7735', 'distb': 'UNFI', 'brand': 'bionaturae®', 'product': 'Extra Virgin Olive Oil', 'upc': '2250642350'}, 
@@ -58,7 +58,7 @@ class Main extends React.Component {
 
             ],
             fileName: '',
-            indexingIdType: 'distbId'
+            indexingIdType: 'distbId',
         };
 
     
@@ -132,13 +132,19 @@ class Main extends React.Component {
         
         const distbs = {}
         sourceData.forEach((row) => {
-            // if (row["distbId"].length != 0){
+            if (this.separateMdfFields.includes(row["distb"])){
                 if (distbs[row["distb"]]) {
                     distbs[row["distb"]].push({distbId: row["distbId"], upc: row['upc']})
                 } else {
                     distbs[row["distb"]] = [{ distbId: row["distbId"], upc: row['upc'] }]
                 }
-            // }
+            } else {
+                if (distbs['MDF%20Main%20View']){
+                    distbs['MDF%20Main%20View'].push({ distbId: row["distbId"], upc: row['upc'], distb: row['distb']})
+                } else{
+                    distbs['MDF%20Main%20View'] = [{ distbId: row["distbId"], upc: row['upc'], distb: row['distb'] }]
+                }
+            }
         })
         const formData = new FormData();
         formData.append('distbs', JSON.stringify(distbs));
@@ -159,11 +165,11 @@ class Main extends React.Component {
     }
 
     mapMatches(matches, sourceData) {
+        console.log("mapMatches matches: ", matches); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         if (this.state.indexingIdType === 'upc') {
             this.mapUpcMatches(matches, sourceData)
         } else if (this.state.indexingIdType === 'distbId') {
-            console.log('pass')
             this.mapDistbIdMatches(matches, sourceData)
         }
     }
