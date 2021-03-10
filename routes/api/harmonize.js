@@ -161,7 +161,6 @@ router.post('/match', async(req, res) => {
     
     const indexingIdType = JSON.parse(req.body.indexingIdType)
     const distbs = JSON.parse(req.body.distbs)
-    console.log(typeof distbs)
     let matches = {}
     let distbsArray = Object.entries(distbs)
     

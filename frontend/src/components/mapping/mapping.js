@@ -3,7 +3,6 @@ import { mappingStyle, tLBlue } from './../styles'
 
 const reducer = (state, action) => {
     Object.freeze(state)
-    console.log(action)
     return ({...state, [action.type]: action.payload})
 }
 
@@ -51,7 +50,6 @@ const Mapping = (props) => {
  
 
 
-    console.log(sourceFields)
     return (
         <div style={mappingStyle.container}>
             <div

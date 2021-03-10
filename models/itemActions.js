@@ -41,7 +41,6 @@ module.exports = {
             address = address.slice(0, -2)
             address += ")"
             console.log(address)
-            // console.log(address)
             if (offset){
                 return airtable.get(address, { params: { offset } })
             } else {

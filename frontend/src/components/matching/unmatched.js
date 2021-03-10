@@ -6,7 +6,6 @@ import UnmatchedElement from './unmatchedElement'
 const Unmatched = (props) => {
 
     if (props.unmatchedData.length === 0){return (  null  )}
-    console.log(props.unmatchedData)
     return (
         <div style={unmatchedStyle.container}>
             <div
@@ -19,7 +18,6 @@ const Unmatched = (props) => {
             >Unmatched</div>
 
             {props.unmatchedData.map((unmatchedItem, idx) => {
-                console.log(unmatchedItem)
                 return (
                     <UnmatchedElement
                         key={idx}

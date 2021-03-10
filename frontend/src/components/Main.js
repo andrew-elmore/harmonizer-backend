@@ -234,7 +234,6 @@ class Main extends React.Component {
         const matchedData = this.state.matchedData
         let unmatchedData = this.state.unmatchedData
 
-        console.log("MapDistib unmatchedData: ", unmatchedData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         
         sourceData.forEach((row) => {
@@ -281,7 +280,6 @@ class Main extends React.Component {
                 console.log(err)
             }
         });
-        console.log("MapDistib unmatchedData: ", unmatchedData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         
         this.setState({

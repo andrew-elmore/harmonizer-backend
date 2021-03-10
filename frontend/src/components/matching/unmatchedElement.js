@@ -10,9 +10,7 @@ const UnmatchedElement = (props) => {
         setUnmatchedItem(props.unmatchedItem)
 
     }
-    console.log("UnmatchedElement props.unmatchedItem: ", props.unmatchedItem); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    console.log("UnmatchedElement unmatchedItem: ", unmatchedItem); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    console.log("UnmatchedElement idx: ", props.idx); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    
     
     if (unmatchedItem.length === 0) { return null }
 
@@ -82,7 +80,6 @@ const UnmatchedElement = (props) => {
                 <button
                     style={{ ...unmatchedStyle.searchButton, marginBottom: 10 }}
                     onClick={() => {
-                        console.log('fire')
                         props.notInDatabase(unmatchedItem, props.idx)
                     }}
                 >Not In Database</button>
