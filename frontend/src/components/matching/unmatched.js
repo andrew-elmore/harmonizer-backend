@@ -6,6 +6,7 @@ import UnmatchedElement from './unmatchedElement'
 const Unmatched = (props) => {
 
     if (props.unmatchedData.length === 0){return (  null  )}
+    console.log(props.unmatchedData)
     return (
         <div style={unmatchedStyle.container}>
             <div
@@ -17,13 +18,15 @@ const Unmatched = (props) => {
                 }}
             >Unmatched</div>
 
-            {props.unmatchedData.map((unmatchedItem) => {
+            {props.unmatchedData.map((unmatchedItem, idx) => {
+                console.log(unmatchedItem)
                 return (
                     <UnmatchedElement
-                        key={unmatchedItem.distbId}
+                        key={idx}
+                        idx={idx}
                         unmatchedItem={unmatchedItem}
                         fetchMatches={(item) => { props.fetchMatches(item) }}
-                        notInDatabase={(item) => { props.notInDatabase(item)}}
+                        notInDatabase={(item, idx) => { props.notInDatabase(item, idx)}}
                     />
                 )
             })}

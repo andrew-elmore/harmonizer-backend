@@ -84,8 +84,9 @@ router.post('/upload', (req, res, next) => {
         }
 
         csvtojson().fromFile(destination).then(async (source) => {
+            console.log(Object.keys(source).length)
             res.send(source)
-
+            
             setTimeout(() => {
                 try {
                     fs.unlinkSync(destination)
@@ -134,13 +135,11 @@ const mapAirtableResultsUpc = (matches, airtableResults, distb) => {
 }
 
 const mapAirtableResultsDistbId = (matches, airtableResults, distb) => {
-    // console.log("mapAirtableResultsDistbId airtableResults.length: ", airtableResults.length); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     
 
     const records = airtableResults
 
     records.forEach((record) => {
-        // console.log("records.forEach record.fields: ", record.fields["BRAND_NAME"]); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         
         const distbId = record.fields['DISTB_ID']
         const tlId = record.fields['TL_ID']
@@ -159,16 +158,16 @@ const mapAirtableResultsDistbId = (matches, airtableResults, distb) => {
 }
 
 router.post('/match', async(req, res) => {
-    console.log(req.body.indexingIdType)
+    
     const indexingIdType = JSON.parse(req.body.indexingIdType)
     const distbs = JSON.parse(req.body.distbs)
+    console.log(typeof distbs)
     let matches = {}
     let distbsArray = Object.entries(distbs)
     
     for (const [distb, items] of distbsArray) {
         try{
             const airtableResults = await recursiveFetchMatches(distb, items, null)
-            console.log(indexingIdType === 'distbId')
             if (indexingIdType === 'distbId'){
                 mapAirtableResultsDistbId(matches, airtableResults, distb)
             } else {
@@ -178,29 +177,26 @@ router.post('/match', async(req, res) => {
             console.log(err.response.status)
         }
     }
-    console.log(matches)
-    const unsortedMdfMainViewMatches = Object.entries(matches['MDF%20Main%20View'])
-    unsortedMdfMainViewMatches.forEach(([id, item]) => {
-        distb = item.productData['DISTB'].replace('#', '')
-        if (matches[distb]){
-            matches[distb][id] = item
-        } else {
-            matches[distb] = {[id]: item}
-        }
-    })
-    delete matches['MDF%20Main%20View']
+    if (matches['MDF%20Main%20View']){
+        const unsortedMdfMainViewMatches = Object.entries(matches['MDF%20Main%20View'])
+        unsortedMdfMainViewMatches.forEach(([id, item]) => {
+            distb = item.productData['DISTB'].replace('#', '')
+            if (matches[distb]){
+                matches[distb][id] = item
+            } else {
+                matches[distb] = {[id]: item}
+            }
+        })
+        delete matches['MDF%20Main%20View']
+    }
     res.send(matches)
 })
 
 
 router.post('/download', async(req, res) => {
     const matchedData = JSON.parse(req.body.matchedData)
-    console.log(matchedData[0])
-    console.log("/download matchedData[0].productData: ", matchedData[0].productData['BRAND']); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     let csvData = matchedData.map((row) => {
-        const productData = row.productData
-        console.log("/download row.productData['BRAND']: ", row.productData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        
+        const productData = row.productData        
         return({
             ["TL_ID"]: row.tlId,
             ["DISTB_ID"]: row.distbId,
@@ -238,5 +234,3 @@ router.post('/download', async(req, res) => {
 
 module.exports = router;
 
-
-// /MDF%20Main%20View?filterByFormula=OR(AND({DISTB}="SV#",FIND("2914190",{DISTB_ID})), AND({DISTB}="SOS#",FIND("3255",{DISTB_ID})))

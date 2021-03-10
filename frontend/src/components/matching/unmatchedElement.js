@@ -3,7 +3,17 @@ import { unmatchedStyle } from '../styles'
 
 
 const UnmatchedElement = (props) => {
+    const [originalItem, setOriginalItem] = useState(props.unmatchedItem)
     const [unmatchedItem, setUnmatchedItem] = useState(props.unmatchedItem)
+    if (props.unmatchedItem != originalItem){
+        setOriginalItem(props.unmatchedItem)
+        setUnmatchedItem(props.unmatchedItem)
+
+    }
+    console.log("UnmatchedElement props.unmatchedItem: ", props.unmatchedItem); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    console.log("UnmatchedElement unmatchedItem: ", unmatchedItem); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    console.log("UnmatchedElement idx: ", props.idx); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    
     if (unmatchedItem.length === 0) { return null }
 
     const handleChange = (field) => {
@@ -17,7 +27,6 @@ const UnmatchedElement = (props) => {
     }
 
     
-    console.log("UnmatchedElement unmatchedItem: ", unmatchedItem); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     
 
     return (
@@ -47,8 +56,8 @@ const UnmatchedElement = (props) => {
             </div>
 
             <div style={unmatchedStyle.dbData.container}>
-                {unmatchedItem.potentialMatches.map((potentialMatch) => {
-                    return(<div>
+                {unmatchedItem.potentialMatches.map((potentialMatch, idx) => {
+                    return(<div key={idx}>
                         <div>DISTB_ID: {potentialMatch.dbDistbId}</div>
                         <div>TL_ID: {potentialMatch.tlId}</div>
                         <div>LABEL_TYPE: {potentialMatch.labelType}</div>
@@ -73,7 +82,8 @@ const UnmatchedElement = (props) => {
                 <button
                     style={{ ...unmatchedStyle.searchButton, marginBottom: 10 }}
                     onClick={() => {
-                        props.notInDatabase(unmatchedItem)
+                        console.log('fire')
+                        props.notInDatabase(unmatchedItem, props.idx)
                     }}
                 >Not In Database</button>
             </div>

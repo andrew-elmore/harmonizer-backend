@@ -11,13 +11,13 @@ const Mapping = (props) => {
 
 
     const [state, dispatch] = useReducer(reducer, {
-        distbId: 'DistbID',
-        distb: '',
-        brand: '',
-        product: '',
-        upc: '',
-        price: '',
-        plu: ''
+        distbId: 'DISTB_ID',
+        distb: 'DISTB',
+        brand: 'BRAND',
+        product: 'PRODUCT',
+        upc: 'UPC',
+        price: 'PRICE',
+        plu: 'PLU'
     })
     
     if (props.rawData.length === 0) {return (null)}

@@ -13,7 +13,7 @@ const airtable = axios.create({
 module.exports = {
     fetchMatches: (distributor, items , offset) => {
         try{
-            console.log(distributor)
+            
             let address = `/${distributor}?filterByFormula=OR(`
             if (distributor === 'MDF%20Main%20View'){
                 items.forEach(({ distbId, upc, distb }) => {
@@ -38,10 +38,10 @@ module.exports = {
                 })
             }
             
-            
             address = address.slice(0, -2)
             address += ")"
             console.log(address)
+            // console.log(address)
             if (offset){
                 return airtable.get(address, { params: { offset } })
             } else {

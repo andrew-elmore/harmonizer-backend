@@ -90,7 +90,6 @@ class Main extends React.Component {
                 body: data,
             }).then(response => response.json())
                 .then((data) => {
-                    console.log(data)
                     this.setState({ ['rawData']: data })
                 });
         } catch (err){
@@ -157,16 +156,13 @@ class Main extends React.Component {
             body: formData,
         })
         .then(response => response.json())
-        .then((matches) => {            
-            
-            
+        .then((matches) => {                        
+            console.log(matches.length)
             this.mapMatches(matches, sourceData)
-
         });
     }
 
     mapMatches(matches, sourceData) {
-        console.log("mapMatches matches: ", matches); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
         if (this.state.indexingIdType === 'upc') {
             this.mapUpcMatches(matches, sourceData)
@@ -220,6 +216,7 @@ class Main extends React.Component {
                 })
                 unmatchedData = unmatchedData.filter((item) => { return item.product != row.product })
             } catch (err) {
+                unmatchedData.push({ ...row, potentialMatches: [] })
                 console.log(err)
             }
         });
@@ -237,6 +234,9 @@ class Main extends React.Component {
         const matchedData = this.state.matchedData
         let unmatchedData = this.state.unmatchedData
 
+        console.log("MapDistib unmatchedData: ", unmatchedData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        
         sourceData.forEach((row) => {
             try {
                 let matchedItems = []
@@ -257,26 +257,33 @@ class Main extends React.Component {
                     } else {
                         if (unmatchedData.filter((item) => { return (item.product === row.product) }).length === 0) {
                             unmatchedData.push({ ...row, potentialMatches: matchedItems })
+                        } else {
+                            throw 'not Found';
                         }
-                        throw 'not Found';
                     }
                 }
+
                 
-                matchedData.unshift({
-                    ...row,
-                    ['labelType']: matchedItem.labelType,
-                    ["tlId"]: matchedItem.tlId,
-                    ["dbProductName"]: matchedItem.dbProductName,
-                    ["distbId"]: matchedItem.dbDistbId,
-                    ["dbUpc"]: matchedItem.dbUpc,
-                    ['productData']: matchedItem.productData
-                })
-                unmatchedData = unmatchedData.filter((item) => { return item.product != row.product })
+                if (matchedItem){
+                    matchedData.unshift({
+                        ...row,
+                        ['labelType']: matchedItem.labelType,
+                        ["tlId"]: matchedItem.tlId,
+                        ["dbProductName"]: matchedItem.dbProductName,
+                        ["distbId"]: matchedItem.dbDistbId,
+                        ["dbUpc"]: matchedItem.dbUpc,
+                        ['productData']: matchedItem.productData
+                    })
+                    unmatchedData = unmatchedData.filter((item) => { return item.product != row.product })
+                }
             } catch (err) {
+                unmatchedData.push({ ...row, potentialMatches: [] })
                 console.log(err)
             }
         });
+        console.log("MapDistib unmatchedData: ", unmatchedData); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
+        
         this.setState({
             ["matchedData"]: matchedData,
             ["unmatchedData"]: unmatchedData,
@@ -285,7 +292,8 @@ class Main extends React.Component {
     }
 
 
-    notInDatabase(item) {
+    notInDatabase(item, idx) {
+        debugger
         const matchedData = this.state.matchedData
         let unmatchedData = this.state.unmatchedData
         matchedData.unshift({
@@ -297,11 +305,7 @@ class Main extends React.Component {
             ["dbUpc"]: item.upc,
             ['productData']: { ['BRAND']: item.brand, ['PRODUCT']: item.product, }
         })
-        unmatchedData = unmatchedData.filter((row) => { 
-            console.log('row', row)
-            console.log('item', item)
-            return item.product != row.product 
-        })
+        unmatchedData.splice(idx, 1)
         this.setState({
             ["matchedData"]: matchedData,
             ["unmatchedData"]: unmatchedData
@@ -396,7 +400,7 @@ class Main extends React.Component {
                 <Unmatched
                     unmatchedData={this.state.unmatchedData}
                     fetchMatches={(item) => {this.fetchMatches(item)}}
-                    notInDatabase={(item) => { this.notInDatabase(item)}}
+                    notInDatabase={(item, idx) => { this.notInDatabase(item, idx)}}
                 />
                 <Matched
                     matchedData={this.state.matchedData}
